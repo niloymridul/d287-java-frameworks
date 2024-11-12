@@ -7,7 +7,7 @@ In this README file, I will be explaining what changes I have made during this p
 C - Customize the HTML user interface for your customer’s application. The user interface should
 include the shop name, the product names, and the names of the parts.
 
-Here is what I have done for this part:
+Here is what I have done for this part: (Note all of this was done via the mainscreen.html file).
 - Added a Style tag and CSS style choices from lines 4 to 24 which consists of color, font-size,etc:
 ```
   <!-- CSS Styling -->

@@ -17,11 +17,6 @@
             color: whitesmoke;}
         th{color: cornsilk;}
         form{color: beige;}
-        img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
     </style>
     <meta charset="UTF-8">
 
@@ -86,6 +81,12 @@
             <td>8</td>
             <td>Provides power to start the vehicle.</td>
         </tr>
+        <tr>
+            <td>CV Axle</td>
+            <td>$320.65</td>
+            <td>12</td>
+            <td>Makes all axles and angles possible while driving.(Comes in both directions for turning.)</td>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="tempPart : ${parts}">
@@ -147,6 +148,12 @@
             <td>17</td>
             <td>Prevent's dirt,wear and salt corrosion.(Comes in pairs of twos).</td>
         </tr>
+        <tr>
+            <td>Car Air Freshener - Mint Flavored</td>
+            <td>$6.40</td>
+            <td>89</td>
+            <td>Leaves the car smelling fresh once hanged.</td>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="tempProduct : ${products}">
@@ -163,8 +170,9 @@
 </div>
 <footer>
     <p>Please Call 1-NOT-###-REAL<br>
-        <p> Or use the email down below</p>
+        <p> Or use the email down below if you have any questions.</p>
         <a href="mailto:carcentral@cars.com">carcentral@cars.com</a></p>
+    <a href="/about" class="btn btn-info">About Car Central</a>
     <p>Copyright @CarCentral</p>
 </footer>
 </body>
