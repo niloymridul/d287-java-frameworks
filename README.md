@@ -5,10 +5,11 @@ D287 – JAVA FRAMEWORKS
 
 In this README file, I will be explaining what changes I have made during this project.
 
-## C - Customize the HTML user interface for your customer’s application. The user interface shouldinclude the shop name, the product names, and the names of the parts.
- 
-Here is what I have done for this part: (Note all of this was done via the mainscreen.html file).
-- Added a Style tag and CSS style choices from lines 4 to 24 which consists of color, font-size,etc:
+## C - Customize the HTML user interface for your customer’s application. The user interface should include the shop name, the product names, and the names of the parts.
+
+Here is what I have done for this part: (Note all of this was done via the mainscreen.html file). 
+Filename: mainscreen.html
+- Lines 4 to 24 - Added a Style tag and CSS style choices which consists of color, font-size,etc:
 ```
   <!-- CSS Styling -->
     <style>
@@ -127,27 +128,32 @@ Here is what I have done for this part: (Note all of this was done via the mains
         }
     </style>
 ```
-- For lines 41, I changed the heading of the shop to that of a Car Shop that sells Toyota parts. This part is underlined.
+Filename: mainscreen.html
+- Lines 41 - I changed the heading of the shop to that of a Car Shop that sells Toyota parts. This part is underlined.
 ```
     <h1><u>Car Central</u></h1>
 ```
-- For lines 42 - 43, I added an image from a stock free image website, resized it and centered right below the new 
+Filename: mainscreen.html
+- Lines 42 to 43 - I added an image from a stock free image website, resized it and centered right below the new 
 title.
 ```
 <img src="https://images.pexels.com/photos/29028107/pexels-photo-29028107/free-photo-of-sleek-white-toyota-sports-car-in-front-of-dealership.jpeg"
          alt="pexels.com" style ="width: 350px;height: 200px" class = "center" !important>
 ```
-- For lines 45, I renamed the heading to what the car shop does which is sell toyota parts. 
+Filename: mainscreen.html
+- Line 45 - I renamed the heading to what the car shop does which is sell toyota parts. 
 All the headings have underlines.
 ```
     <h2><u>Toyota Car Parts</u></h2>
 ```
-- For lines 102, I renamed the heading to Car Products and Add's on as they improve the vehicle but
+Filename: mainscreen.html
+- Lines 102 - I renamed the heading to Car Products and Add's on as they improve the vehicle but
 are not necessarily neeeded for the vehicle to work.
 ```
     <h2><u>Car Products/Add-On's</u></h2>
 ```
-- For lines 164 to 169, I added in a footer as every company should have a way to contact
+Filename: mainscreen.html
+- Lines 164 to 169 - I added in a footer as every company should have a way to contact
 them in case of customer complaints and bad practices.
 ```
 <footer>
@@ -159,24 +165,28 @@ them in case of customer complaints and bad practices.
 ```
 ## D - Add an “About” page to the application to describe your chosen customer’s company to web viewers and include naviga�on to and from the “About” page and the main screen.
 I have done the following:
-- I redited some of the lines in the mainscreen.html file to have it look better grammatically. The one below is line 88.
+Filename: mainscreen.html
+- Line 88 - I redited some of the lines in the mainscreen.html file to have it look better grammatically.
 ````
 <td>Makes all axles and angles possible while driving.(Comes in both directions for turning.)</td>
 ````
-- This line is 173. Again, both the line down below and the one above changes the writing but has little to no impact on
+Filename: mainscreen.html
+- Line 173 - Again, both the line down below and the one above changes the writing but has little to no impact on
 functionality.
 ````
 <p> Or use the email down below if you have any questions.</p>
 ````
-- I also added a button function on line 175 as usually the bottom of the website is where people find the 
+Filename: mainscreen.html
+- Line 175 - I also added a button function as usually at the bottom of the website is where people find the 
 about page describing the company.
 ````
  <a href="/about" class="btn btn-info">About Car Central</a>
 ````
-- I then created the about.html file which was copied and re-edited from the mainscreen.html file.
+Filename: about.html
+- Line 1 to 56 - I then created the about.html file which was copied and re-edited from the mainscreen.html file.
 Here is the code as I had added the styling from the mainscreen page to be consistent with the color schemes.
 I also wrote a short blurb regarding the company and added a button to return the main page.
-Please note the lines are from 1 to 56 of the file. This also includes a button to return to the mainscreen page.
+ This also includes a button to return to the mainscreen page.
 ````
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -235,10 +245,166 @@ Please note the lines are from 1 to 56 of the file. This also includes a button 
 </body>
 </html>
 ````
+Filename: about.html
 - Also, because we need to link the mainscreen.html file to the about.html file, I added a @Controller method to the 
 MainScreenControllerr.java file on lines 55 to 57.
 ````
 @GetMapping("/about")
     public String about() { return "about.html"; }
 }
+````
+## E - Add a sample inventory appropriate for your chosen store to the applica�on. You should have five parts and five products in your sample inventory and should not overwrite existing data in the database.
+
+For this part I have done the following:
+
+Filename: mainscreen.html
+- Line 17 and Line 19 were given !important tag to ensure that the text on tables were ensured to have color matching 
+the desired output.
+````
+  Line 17 - td{color: white !important;}
+  Line 19 - th{color: cornsilk !important; }
+````
+Filename: mainscreen.html
+- Line 90 to 93,had the tag description taken out.
+````
+ <th>Name</th>
+ <th>Price</th>
+ <th>Inventory</th>
+ <th>Action</th>
+````
+Filename: BootStrapData.java
+-Line 33,added private variable to use to create inhouse products and add them to website.
+````
+private final InhousePartRepository inhousePartRepository;
+````
+Filename: BootStrapData.java
+-Line 36, added a input for the constructor to help build the products which are objects.
+````
+public BootStrapData(PartRepository partRepository, ProductRepository productRepository, OutsourcedPartRepository outsourcedPartRepository, InhousePartRepository inhousePartRepository) {
+
+````
+Filename: BootStrapData.java
+-Line 40, added the line to use the inputs for the constructor to help build the products so we do not need 
+to type in the products manually everytime we opened the website code.
+````
+this.inhousePartRepository = inhousePartRepository;
+````
+Filename: BootStrapData.java
+-Line 43 - 153, added the products and parts for the shop. Made using both the inhouse and outsourced repository code
+to diversify the range of options of parts. The products were seperate but still included nonetheless. Also included a 
+a count function to check if there were products saved before. If there were, the check was written to flush out the 
+previous save data.
+
+````
+@Override
+    public void run(String... args) throws Exception {
+//InHouse------------------------------------------------------------------------------------------------
+        if(inhousePartRepository.count() > 0) {
+            inhousePartRepository.deleteAll();
+            outsourcedPartRepository.deleteAll();
+            productRepository.deleteAll();
+        }
+        if (inhousePartRepository.count() == 0) {
+            List<InhousePart> inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
+
+
+            InhousePart HeadLightAssembly = new InhousePart();
+            HeadLightAssembly.setName("Head Light Assembly");
+            HeadLightAssembly.setInv(12);
+            HeadLightAssembly.setPrice(67.66);
+            HeadLightAssembly.setId(5);
+            inhousePartRepository.save(HeadLightAssembly);
+            InhousePart thePart = null;
+            inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
+            for (InhousePart part : inhouseParts) {
+                if (part.getName().equals("HeadLightAssembly")) thePart = thePart;
+            }
+
+            InhousePart IgnitionCoil = new InhousePart();
+            IgnitionCoil.setName("Ignition Coil");
+            IgnitionCoil.setInv(132);
+            IgnitionCoil.setPrice(47.38);
+            IgnitionCoil.setId(6);
+            inhousePartRepository.save(IgnitionCoil);
+            thePart = null;
+            inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
+            for (InhousePart part : inhouseParts) {
+                if (part.getName().equals("Ignition Coil")) thePart = thePart;
+            }
+
+            InhousePart TransmissionMount = new InhousePart();
+            TransmissionMount.setName("Transmission Mount");
+            TransmissionMount.setInv(3);
+            TransmissionMount.setPrice(70.00);
+            TransmissionMount.setId(7);
+            inhousePartRepository.save(TransmissionMount);
+            thePart = null;
+            inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
+            for (InhousePart part : inhouseParts) {
+                if (part.getName().equals("Transmission Mount")) thePart = thePart;
+            }
+
+            InhousePart Battery = new InhousePart();
+            Battery.setName("Battery");
+            Battery.setInv(8);
+            Battery.setPrice(167.49);
+            Battery.setId(8);
+            inhousePartRepository.save(Battery);
+            thePart = null;
+            inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
+            for (InhousePart part : inhouseParts) {
+                if (part.getName().equals("Battery")) thePart = thePart;
+            }
+
+
+            inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
+            for (InhousePart part : inhouseParts) {
+                System.out.println(part.getName() + " " + part.getId());
+            }
+        }
+//Outsource-----------------------------------------------------------------------------------------------------------
+        if (outsourcedPartRepository.count() == 0) {
+
+            List<OutsourcedPart> outsourcedParts = (List<OutsourcedPart>) outsourcedPartRepository.findAll();
+
+
+            OutsourcedPart CVAxle = new OutsourcedPart();
+            CVAxle.setCompanyName("Foreign Parts Galore");
+            CVAxle.setName("CV Axle");
+            CVAxle.setInv(13);
+            CVAxle.setPrice(27.66);
+            CVAxle.setId(9);
+            outsourcedPartRepository.save(CVAxle);
+            OutsourcedPart theOutPart = null;
+            outsourcedParts = (List<OutsourcedPart>) outsourcedPartRepository.findAll();
+            for (OutsourcedPart part : outsourcedParts) {
+                if (part.getName().equals("CV Axle")) theOutPart = part;
+            }
+
+
+       
+            System.out.println(theOutPart.getCompanyName());
+
+
+            outsourcedParts = (List<OutsourcedPart>) outsourcedPartRepository.findAll();
+            for (OutsourcedPart part : outsourcedParts) {
+                System.out.println(part.getName() + " " + part.getCompanyName());
+            }
+
+//Product-----------------------------------------------------------------------------------------------------------
+            Product antifreeze = new Product("AntiFreeze", 15.65, 63);
+            Product filters = new Product("Air Filters", 10.17, 22);
+            Product fueltankcaps = new Product("Fuel Tank Caps", 9.38, 5);
+            Product floormats = new Product("Floor Mats", 93.84, 17);
+            Product airfreshener = new Product("Car Air Freshener - Mint Flavored", 6.40, 89);
+
+            productRepository.save(antifreeze);
+            productRepository.save(filters);
+            productRepository.save(fueltankcaps);
+            productRepository.save(floormats);
+            productRepository.save(airfreshener);
+
+
+        }
+    }
 ````
