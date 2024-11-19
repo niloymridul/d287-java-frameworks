@@ -408,3 +408,145 @@ previous save data.
         }
     }
 ````
+# F - Add a “Buy Now” button to your product list. Your “Buy Now” bu�on must meet each of the following parameters:
+• The “Buy Now” button must be next to the buttons that update and delete products.
+• The button should decrement the inventory of that product by one. It should not affect the
+inventory of any of the associated parts.
+• Display a message that indicates the success or failure of a purchase.
+
+For this part, I have done the following:
+
+
+Filename: mainscreen.html
+- Line 104, I added a line to bring up the button for the mainscreen to buy any of the listed product.
+````
+<a th:href="@{/buyProduct(productID=${tempProduct.id})}" class="btn btn-primary btn-sm mb-3">Buy Now</a>
+````
+
+New File Created: BuyProductController.java
+-Line 1 to 43, I created a new Java file to act as a controller for when the user wishes to buy a product. As a controller,
+the file will handle the request and decide whether or not the product will be bought, if it can be bought and the change 
+of products inventory via a if else chain. The end results of the chain will lead to the newly created html files that 
+show whether or not the product has been bought. Also after the if chain ends and the product can be bought and is bought,
+the product inventory is lessened by 1 and saved right before going to the productboughtsuccess.html file.
+
+````
+package com.example.demo.controllers;
+
+import com.example.demo.domain.Part;
+import com.example.demo.domain.Product;
+import com.example.demo.repositories.ProductRepository;
+import com.example.demo.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+public class BuyProductController {
+    @Autowired
+    private ProductRepository productRepository;
+
+    @GetMapping("/buyProduct")
+    public String buyProduct(@RequestParam("productID") Long theId, Model theModel) {
+        Optional<Product> desiredproduct = productRepository.findById(theId);
+        if (desiredproduct.isPresent()) {
+            Product product = desiredproduct.get();
+
+            if (product.getInv() > 0) {
+                product.setInv(product.getInv() - 1);
+                productRepository.save(product);
+                return "/productboughtsuccess";
+
+            } else {
+                return "/productboughtfailure";
+            }
+        } else {
+            return "/productboughtfailure";
+        }
+    }
+}
+````
+
+New File Created: productboughtfailure.html
+- Line 1 to 30, as stated as  above when creating the BuyProductController.java file, this one of two files that determine
+whether or not a product has been bought or not. This one is for when the product is not bought sucessfully as per the title
+of the file. This file comes with the same style settings as the main page to keep with consistency. There is also a link
+that will go back to the main page when the user reaches the page.
+
+````
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body{
+            background-color: #203544 !important;
+            font-family: "Times New Roman",serif !important;}
+        h1{
+            color: snow;
+            text-align: center;
+            font-size: 40px !important;
+        }
+        tbody{color: white !important;}
+        h2{color: white;}
+        h3{color:white;}
+        p{color: honeydew;}
+        td{color: white !important;}
+        a:link{color: whitesmoke;}
+        th{color: cornsilk !important; }
+    </style>
+    <meta charset="UTF-8">
+    <title>Product Bought Unsuccessful.</title>
+</head>
+<body>
+<h1>The product was not able to be bought. We apologize for the trouble. Please try again.</h1>
+<p>Click down below to go back to the main page!</p>
+<a href="http://localhost:8080/">Main Page</a>
+
+</body>
+</html>
+````
+New File Created: productboughtsuccess.html
+- Line 1 - 30, just like the productboughtfailure.html file, this also includes the style changes and is used as one of
+two files to determine whether a product is bought or not. The only difference is that text for the website is written to
+show that the product was successfully bought.
+````
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body{
+            background-color: #203544 !important;
+            font-family: "Times New Roman",serif !important;}
+        h1{
+            color: snow;
+            text-align: center;
+            font-size: 40px !important;
+        }
+        tbody{color: white !important;}
+        h2{color: white;}
+        h3{color:white;}
+        p{color: honeydew;}
+        td{color: white !important;}
+        a:link{color: whitesmoke;}
+        th{color: cornsilk !important; }
+    </style>
+    <meta charset="UTF-8">
+    <title>Product Bought Successfully</title>
+</head>
+<body>
+<h1>The product was bought successfully. Thank you for your purchase.</h1>
+<p>Click down below to go back to the main page!</p>
+<a href="http://localhost:8080/">Main Page</a>
+
+</body>
+</html>
+````
