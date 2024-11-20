@@ -3,6 +3,7 @@ package com.example.demo.domain;
 import com.example.demo.validators.ValidDeletePart;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -29,6 +30,13 @@ public abstract class Part implements Serializable {
     @Min(value = 0, message = "Inventory value must be positive")
     int inv;
 
+    @Min(value = 0, message = "Minimum Inventory value must be 0 or greater.")
+    int minInv;
+
+    @Min(value = 1, message = "Maximum Inventory must be at least 1.")
+    @Max(value = 200, message =  "Maximum Inventory cannot exceed storage of 200 units.")
+    int maxInv;
+
     @ManyToMany
     @JoinTable(name="product_part", joinColumns = @JoinColumn(name="part_id"),
             inverseJoinColumns=@JoinColumn(name="product_id"))
@@ -41,6 +49,8 @@ public abstract class Part implements Serializable {
         this.name = name;
         this.price = price;
         this.inv = inv;
+        this.minInv = 0;
+        this.maxInv = 200;
     }
 
     public Part(long id, String name, double price, int inv) {
@@ -48,6 +58,8 @@ public abstract class Part implements Serializable {
         this.name = name;
         this.price = price;
         this.inv = inv;
+        this.minInv = 0;
+        this.maxInv = 200;
     }
 
     public long getId() {
@@ -82,12 +94,33 @@ public abstract class Part implements Serializable {
         this.inv = inv;
     }
 
+    public int getMaxInv() {
+        return maxInv;
+    }
+
+    public void setMaxInv(int maxinv) { this.maxInv = maxinv; }
+
+    public int getMinInv() {
+        return minInv;
+    }
+
+    public void setMinInv(int mininv) { this.minInv = mininv; }
+
     public Set<Product> getProducts() {
         return products;
     }
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public void checkforlimits() {
+        if(this.inv < this.minInv) {
+            throw new RuntimeException("Item cannot be lower then what is allowed.");
+        }
+        if(this.inv > this.maxInv) {
+            throw new RuntimeException("Item cannot be higher then what is allowed.");
+        }
     }
 
     public String toString(){
@@ -108,3 +141,4 @@ public abstract class Part implements Serializable {
         return (int) (id ^ (id >>> 32));
     }
 }
+

@@ -410,20 +410,27 @@ previous save data.
 ````
 # F - Add a “Buy Now” button to your product list. Your “Buy Now” bu�on must meet each of the following parameters:
 • The “Buy Now” button must be next to the buttons that update and delete products.
+
 • The button should decrement the inventory of that product by one. It should not affect the
 inventory of any of the associated parts.
+
 • Display a message that indicates the success or failure of a purchase.
 
 For this part, I have done the following:
 
-
 Filename: mainscreen.html
+
+Prompt: The “Buy Now” button must be next to the buttons that update and delete products.
 - Line 104, I added a line to bring up the button for the mainscreen to buy any of the listed product.
 ````
 <a th:href="@{/buyProduct(productID=${tempProduct.id})}" class="btn btn-primary btn-sm mb-3">Buy Now</a>
 ````
 
 New File Created: BuyProductController.java
+
+Prompt: The button should decrement the inventory of that product by one. It should not affect the
+inventory of any of the associated parts.
+
 -Line 1 to 43, I created a new Java file to act as a controller for when the user wishes to buy a product. As a controller,
 the file will handle the request and decide whether or not the product will be bought, if it can be bought and the change 
 of products inventory via a if else chain. The end results of the chain will lead to the newly created html files that 
@@ -477,6 +484,9 @@ public class BuyProductController {
 ````
 
 New File Created: productboughtfailure.html
+
+Prompt: Display a message that indicates the success or failure of a purchase.
+
 - Line 1 to 30, as stated as  above when creating the BuyProductController.java file, this one of two files that determine
 whether or not a product has been bought or not. This one is for when the product is not bought sucessfully as per the title
 of the file. This file comes with the same style settings as the main page to keep with consistency. There is also a link
@@ -515,6 +525,9 @@ that will go back to the main page when the user reaches the page.
 </html>
 ````
 New File Created: productboughtsuccess.html
+
+Prompt: Display a message that indicates the success or failure of a purchase.
+
 - Line 1 - 30, just like the productboughtfailure.html file, this also includes the style changes and is used as one of
 two files to determine whether a product is bought or not. The only difference is that text for the website is written to
 show that the product was successfully bought.
@@ -549,4 +562,140 @@ show that the product was successfully bought.
 
 </body>
 </html>
+````
+# G - Modify the parts to track maximum and minimum inventory by doing the following:
+• Add additional fields to the part empty for maximum and minimum inventory.
+
+• Modify the sample inventory to include the maximum and minimum fields.
+
+• Add to the InhousePartForm and OutsourcedPartForm forms additional text inputs for the
+inventory so the user can set the maximum and minimum values.
+
+• Rename the file the persistent storage is saved to.
+
+• Modify the code to enforce that the inventory is between or at the minimum and maximum value.
+
+For this part, I have done the following:
+
+Prompt: Add additional fields to the part empty for maximum and minimum inventory.
+Filename: Part.java
+- Lines 33 to 38 - I created new variables to use as limits for inventory. They are named minInv and maxInv which are 
+used to represent the minimum and maximum inventory values that should be used.
+
+````
+@Min(value = 0, message = "Minimum Inventory value must be 0 or greater.")
+int minInv;
+
+@Min(value = 1, message = "Maximum Inventory must be at least 1.")
+@Max(value = 200, message =  "Maximum Inventory cannot exceed storage of 200 units.")
+int maxInv;
+````
+- Lines 48 to 63 - I added both minInv and maxInv to the constructors ensure that any parts made would have them by 
+default.
+````
+public Part(String name, double price, int inv) {
+        this.name = name;
+        this.price = price;
+        this.inv = inv;
+        this.minInv = 0;
+        this.maxInv = 200;
+    }
+
+public Part(long id, String name, double price, int inv) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.inv = inv;
+        this.minInv = 0;
+        this.maxInv = 200;
+    }
+````
+- Lines 97 to 107 - Here is where I end up putting in getters and setters for the eventual use of setting the values and 
+getting the values of both the maximum and minimum inventory without altering them.
+
+````
+public int getMaxInv() {return maxInv;}
+
+public void setMaxInv(int maxinv) { this.maxInv = maxinv; }
+
+public int getMinInv() {return minInv; }
+
+public void setMinInv(int mininv) { this.minInv = mininv; }
+````
+Prompt: Modify the sample inventory to include the maximum and minimum fields.
+Filename: BootStrapData.java
+- Lines 60,61,74,75,88,89,102,103,129 and 130 - each of these lines have included both minimum and maximum units as
+requested from the prompt. 
+
+Note: The code immediately down below is for several parts. <partbeingused> is a placeholder for the part being used in
+the code.
+````
+<partbeingused>.setMinInv(0);
+<partbeingused>.setMaxInv(200);
+````
+Prompt: Add to the InhousePartForm and OutsourcedPartForm forms additional text inputs for the inventory so the 
+user can set the maximum and minimum values.
+Filename: InhousePartForm.html(lines 26 to 30) & OutsourcedPartForm.html(lines 27 to 31).
+- For the lines mentioned above for the form files, down below show that the lines coded provide two more forms where 
+users can input new parts for the table on the website. There are two lines each given for the minimum and maximum 
+inventory.
+
+````
+ <p><input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4"/></p>
+    <p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Inventory Error</p>
+
+    <p><input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4"/></p>
+    <p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Inventory Error</p>
+````
+Prompt: Rename the file the persistent storage is saved to.
+filename: application.properties
+- Line 6 - Persistent storage in this case being a datasource to be used as a database connection, we simply have to 
+change the line url to something more fitting of the website thus the name change.
+````
+spring.datasource.url=jdbc:h2:file:~/car-central-inventory-db
+````
+Prompt:  Modify the code to enforce that the inventory is between or at the minimum and maximum value.
+filename: Part.java
+- Line 117 to 124 - This method has been created to check if the part's inventory is above or below the defined maximum 
+and or minimum limit. They both throw exceptions because of this.
+
+````
+public void checkforlimits() {
+        if(this.inv < this.minInv) {
+            throw new RuntimeException("Item cannot be lower then what is allowed.");
+        }
+        if(this.inv > this.maxInv) {
+            throw new RuntimeException("Item cannot be higher then what is allowed.");
+        }
+    }
+````
+
+Filename: PartServiceImpl.java
+- Lines 57 to 62 - We put in the method to check for limits to ensure that the wrong input is not save.
+````
+@Override
+    public void save(Part thePart) {
+            thePart.checkforlimits();
+            partRepository.save(thePart);
+
+    }
+````
+Filename: OutsourcedPartServiceImpl.java
+- Lines 50 to 55 - Again, we put in the new method to check before saving. 
+````
+@Override
+    public void save(OutsourcedPart thePart) {
+        thePart.checkforlimits();
+        partRepository.save(thePart);
+
+    }
+````
+Filename: InhousePartServiceImpl.java
+- Lines 52 to 56 - Again, we put in the new method to check before saving.
+````
+@Override
+    public void save(InhousePart thePart) {
+        thePart.checkforlimits();
+        partRepository.save(thePart);
+    }
 ````

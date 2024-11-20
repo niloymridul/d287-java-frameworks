@@ -57,6 +57,8 @@ public class BootStrapData implements CommandLineRunner {
             HeadLightAssembly.setInv(12);
             HeadLightAssembly.setPrice(67.66);
             HeadLightAssembly.setId(5);
+            HeadLightAssembly.setMinInv(0);
+            HeadLightAssembly.setMaxInv(200);
             inhousePartRepository.save(HeadLightAssembly);
             InhousePart thePart = null;
             inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
@@ -69,6 +71,8 @@ public class BootStrapData implements CommandLineRunner {
             IgnitionCoil.setInv(132);
             IgnitionCoil.setPrice(47.38);
             IgnitionCoil.setId(6);
+            IgnitionCoil.setMinInv(0);
+            IgnitionCoil.setMaxInv(200);
             inhousePartRepository.save(IgnitionCoil);
             thePart = null;
             inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
@@ -81,6 +85,8 @@ public class BootStrapData implements CommandLineRunner {
             TransmissionMount.setInv(3);
             TransmissionMount.setPrice(70.00);
             TransmissionMount.setId(7);
+            TransmissionMount.setMinInv(0);
+            TransmissionMount.setMaxInv(200);
             inhousePartRepository.save(TransmissionMount);
             thePart = null;
             inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
@@ -93,6 +99,8 @@ public class BootStrapData implements CommandLineRunner {
             Battery.setInv(8);
             Battery.setPrice(167.49);
             Battery.setId(8);
+            Battery.setMinInv(0);
+            Battery.setMaxInv(200);
             inhousePartRepository.save(Battery);
             thePart = null;
             inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();
@@ -118,6 +126,8 @@ public class BootStrapData implements CommandLineRunner {
             CVAxle.setInv(13);
             CVAxle.setPrice(27.66);
             CVAxle.setId(9);
+            CVAxle.setMinInv(0);
+            CVAxle.setMaxInv(200);
             outsourcedPartRepository.save(CVAxle);
             OutsourcedPart theOutPart = null;
             outsourcedParts = (List<OutsourcedPart>) outsourcedPartRepository.findAll();
