@@ -51,7 +51,6 @@ public class InhousePartServiceImpl implements InhousePartService {
 
     @Override
     public void save(InhousePart thePart) {
-        thePart.checkforlimits();
         partRepository.save(thePart);
     }
 

@@ -55,6 +55,14 @@ public class AddProductController {
     @PostMapping("/showFormAddProduct")
     public String submitForm(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult, Model theModel) {
         theModel.addAttribute("product", product);
+        if(product.getInv() < product.getParts().size()) {
+            bindingResult.rejectValue("inv", "inv.lessThanInv");
+            return "This cannot be added as it below the minimum amount of units allowed.";
+        }
+        if(product.getInv() > product.getParts().size()) {
+            bindingResult.rejectValue("inv", "inv.moreThanInv");
+            return "This cannot be added as it is higher than the maximum amount of units allowed.";
+        }
 
         if(bindingResult.hasErrors()){
             ProductService productService = context.getBean(ProductServiceImpl.class);

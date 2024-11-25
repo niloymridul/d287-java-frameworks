@@ -33,12 +33,20 @@ public class EnufPartsValidator implements ConstraintValidator<ValidEnufParts, P
         if (product.getId() != 0) {
             Product myProduct = repo.findById((int) product.getId());
             for (Part p : myProduct.getParts()) {
-                if (p.getInv()<(product.getInv()-myProduct.getInv()))return false;
+                if (p.getInv()<(product.getInv()-myProduct.getInv())) {
+                    constraintValidatorContext.disableDefaultConstraintViolation();
+                    constraintValidatorContext.buildConstraintViolationWithTemplate("This cannot be sanctioned as the input is smaller than the minimum allowed amount of units required.");
+                }
+                    if(p.getInv()>(p.getMaxInv())){
+                        constraintValidatorContext.disableDefaultConstraintViolation();
+                        constraintValidatorContext.buildConstraintViolationWithTemplate("This cannot be sanctioned as the input is greater than the maximum allowed amount of units required.");
+                    }
             }
             return true;
         }
         else{
                 return true;
             }
+        }
     }
-}
+

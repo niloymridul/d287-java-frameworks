@@ -64,6 +64,13 @@ public class AddPartController {
             return "negativeerror";
         }
     }
+/*
+    @PostMapping
+    public String addPart(@Valid @RequestParam("partID") int theId,  Model theModel){
+        PartService repo = context.getBean(PartServiceImpl.class);
+        Part part = repo.findById(theId);
+        if ()
+    }
 
-
+*/
 }
