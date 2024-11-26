@@ -699,3 +699,147 @@ Filename: InhousePartServiceImpl.java
         partRepository.save(thePart);
     }
 ````
+
+# Part H - Add validation for between or at the maximum and minimum fields. The validation must include the following:
+• Display error messages for low inventory when adding and updating parts if the inventory is less
+than the minimum number of parts.
+
+• Display error messages for low inventory when adding and updating products lowers the part
+inventory below the minimum.
+
+• Display error messages when adding and updating parts if the inventory is greater than the
+maximum.
+
+Here is what I did:
+
+Prompt: Display error messages for low inventory when adding and updating parts if the inventory is less
+than the minimum number of parts.
+
+Prompt: Display error messages when adding and updating parts if the inventory is greater than the
+maximum.
+
+Filename: Part.java 
+- Lines 117 to 124 - Lines were taken out to be reused elsewhere.
+- Line 31 - Added @Notblank to ensure that the form used is not empty.
+````
+@NotBlank(message = "Name cannot be blank.")
+````
+- Line 54 - Added min and max inventory to the constructor.
+````
+public Part(String name, double price, int inv, int minInv, int maxInv) {
+````
+NEW File Created: PartLimiterValidator.java
+
+The point of a Validator file, such as this one, is that it provides a mechanism for validating user input. This file
+serves as a way to check if the input of forms in the webpage can accept the user input. Here we see when this file is 
+referenced the part being put into the code is checked for the amount of units in the for loop. We check if it's less 
+or greater than our desired limits. Then if any are true, we return false and give a error message.
+
+````
+package com.example.demo.validators;
+
+import com.example.demo.domain.Part;
+import com.example.demo.domain.InhousePart;
+import com.example.demo.domain.OutsourcedPart;
+import com.example.demo.domain.Product;
+import com.example.demo.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+public class PartLimiterValidator implements ConstraintValidator<ValidPartLimiter, Part> {
+
+    @Override
+    public void initialize(ValidPartLimiter constraintAnnotation) {
+   //     ConstraintValidator.super.initialize(constraintAnnotation);
+    }
+
+    @Override
+    public boolean isValid(Part part, ConstraintValidatorContext context) {
+        if (part.getInv() < part.getMinInv()) {
+       //     ConstraintValidatorContext constraintValidatorContext = null;
+      //      constraintValidatorContext.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Error:Inventory is less than minimum required.");
+            return false;
+        }
+        if(part.getInv() > part.getMaxInv()) {
+      //      ConstraintValidatorContext constraintValidatorContext = null;
+       //     constraintValidatorContext.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Error:Inventory is greater than maximum required.");
+            return false;
+        }
+        return true;
+    }
+}
+````
+NEW File Created: ValidPartLimiter.java
+
+This file works in tandem with the previous file. We use this file for quick reference and to eliminate clutter within codes.
+
+````
+package com.example.demo.validators;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ *
+ *
+ *
+ *
+ */
+@Constraint(validatedBy = {PartLimiterValidator.class})
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ValidPartLimiter {
+    String message() default "Error: Inventory value is incorrect.";
+    Class<?> [] groups() default {};
+    Class<? extends Payload> [] payload() default {};
+
+}
+````
+
+
+Prompt: Display error messages for low inventory when adding and updating products lowers the part
+inventory below the minimum.
+
+Filename: EnufPartsValidator.java
+- Lines 28 to 51 - For this code, I added in if statements to the for loop to check if the products are both greater than 
+or less than the set limits of said units for a product.
+````
+ @Override
+    public boolean isValid(Product product, ConstraintValidatorContext constraintValidatorContext) {
+        if(context==null) return true;
+        if(context!=null)myContext=context;
+        ProductService repo = myContext.getBean(ProductServiceImpl.class);
+        if (product.getId() != 0) {
+            Product myProduct = repo.findById((int) product.getId());
+            for (Part p : myProduct.getParts()) {
+                if (p.getInv()<(product.getInv()-myProduct.getInv())) {
+                    constraintValidatorContext.disableDefaultConstraintViolation();
+                    constraintValidatorContext.buildConstraintViolationWithTemplate("This cannot be sanctioned as the input is smaller than the minimum allowed amount of units required.");
+                }
+                    if(p.getInv()>(p.getMaxInv())){
+                        constraintValidatorContext.disableDefaultConstraintViolation();
+                        constraintValidatorContext.buildConstraintViolationWithTemplate("This cannot be sanctioned as the input is greater than the maximum allowed amount of units required.");
+                    }
+            }
+            return true;
+        }
+        else{
+                return true;
+            }
+        }
+    }
+````
+Filename: ValidEnufParts.java
+- Lines 20 - Changed the default message to reflect the intended message when there aren't enough units in the inventory.
+````
+String message() default "There aren't enough parts in inventory!";
+````
