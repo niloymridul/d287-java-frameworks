@@ -843,3 +843,48 @@ Filename: ValidEnufParts.java
 ````
 String message() default "There aren't enough parts in inventory!";
 ````
+# Part I -Add at least two unit tests for the maximum and minimum fields to the PartTest class in the test package. 
+
+Here is what I did for said part:
+
+Filename: PartTest.java
+
+- Lines 160 to 193 - For this file, I only needed to create two unit tests for the maximum and minimum fields. Because of this, the obvious choice
+was to use and reference the getters and setters of both MaxInv and MinInv variables as it has been shown throughout the previous
+tests in said file.
+````
+@Test
+    void setMinInv(){
+        int minInv = 20;
+        partIn.setMinInv(minInv);
+        assertEquals(minInv,partIn.getMinInv());
+        partOut.setMinInv(minInv);
+        assertEquals(minInv,partOut.getMinInv());
+    }
+    @Test
+    void getMinInv(){
+        int minInv = 20;
+        partIn.setMinInv(minInv);
+        assertEquals(minInv,partIn.getMinInv());
+        partOut.setMinInv(minInv);
+        assertEquals(minInv,partOut.getMinInv());
+    }
+
+    @Test
+    void setMaxInv(){
+        int maxInv = 199;
+        partIn.setMaxInv(maxInv);
+        assertEquals(maxInv,partIn.getMaxInv());
+        partOut.setMaxInv(maxInv);
+        assertEquals(maxInv,partOut.getMaxInv());
+    }
+
+    @Test
+    void getMaxInv(){
+        int maxInv = 199;
+        partIn.setMaxInv(maxInv);
+        assertEquals(maxInv,partIn.getMaxInv());
+        partOut.setMaxInv(maxInv);
+        assertEquals(maxInv,partOut.getMaxInv());
+    }
+````

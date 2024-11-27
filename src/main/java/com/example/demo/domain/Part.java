@@ -131,6 +131,7 @@ public abstract class Part implements Serializable {
         return id == part.id;
     }
 
+
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
@@ -138,4 +139,5 @@ public abstract class Part implements Serializable {
 
 
 }
+
 
