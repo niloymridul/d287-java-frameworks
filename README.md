@@ -888,3 +888,10 @@ tests in said file.
         assertEquals(maxInv,partOut.getMaxInv());
     }
 ````
+# Part J - Remove the class files for any unused validators in order to clean your code.
+
+For this final part, here is what I did.
+
+DELETED DeletePartValidator.java
+
+When looking through the validators, this one file does not have usages throughout the code, thus needing it to be deleted.
