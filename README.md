@@ -408,7 +408,7 @@ previous save data.
         }
     }
 ````
-# F - Add a “Buy Now” button to your product list. Your “Buy Now” bu�on must meet each of the following parameters:
+# F - Add a “Buy Now” button to your product list. Your “Buy Now” button must meet each of the following parameters:
 • The “Buy Now” button must be next to the buttons that update and delete products.
 
 • The button should decrement the inventory of that product by one. It should not affect the
